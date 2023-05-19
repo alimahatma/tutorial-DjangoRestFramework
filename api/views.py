@@ -6,6 +6,7 @@ from .models import Movie, Rating
 from .serializer import MovieSerializer, RatingSerializer, UserSerializer
 from django.contrib.auth.models import User
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -17,6 +18,7 @@ class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated,)
 
     @action(detail=True, methods=['POST'])
     def rate_movie(self, request, pk=None):
@@ -45,11 +47,29 @@ class MovieViewSet(viewsets.ModelViewSet):
         else:
             response = {'message':'You need to provide stars'}
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        
+    def update(self, request, *args, **kwargs):
+        response = {'message':'You can update rating like tahat'}
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+    
+    def create(self, request, *args, **kwargs):
+        response = {'message':'You can create rating like tahat'}
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
-    authentication_classes=(TokenAuthentication, )
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (AllowAny, )
+
+    def update(self, request, *args, **kwargs):
+        response = {'message':'You can update rating like tahat'}
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+    
+    def create(self, request, *args, **kwargs):
+        response = {'message':'You can create rating like tahat'}
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
